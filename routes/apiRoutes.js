@@ -1,31 +1,37 @@
 const router = require("express").Router();
-const Exercise = require("../models/exercise.js");
+const Workout = require("../models/workout.js");
 
-router.post("/api/workouts", ({ body }, res) => {
-  Exercise.create(body)
-    .then(dbExercise => {
-      res.json(dbExercise);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+router.post("/api/workouts", async ({ body }, res) => {
+  console.log('apiRoutes post hit')
+  // console.log(body)
+  // Workout.create(body)
+  //   .then(dbWorkout => {
+  //     res.json(dbWorkout);
+  //   })
+  //   .catch(err => {
+  //     res.status(400).json(err);
+  //   });
+
+  const newWorkout = new Workout();
+  await newWorkout.save();
+  res.json(newWorkout)
+
 });
 
-router.post("/api/workouts/bulk", ({ body }, res) => {
-  Exercise.insertMany(body)
-    .then(dbExercise => {
-      res.json(dbExercise);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+router.put("/api/workouts/:id", async (req, res) => {
+  console.log('apiRoutes put hit')
+  const thisWorkout = await Workout.findOne({_id: req.params.id}).exec();
+  thisWorkout.exercises.push(req.body);
+  await thisWorkout.save();
+  res.json(thisWorkout);
 });
 
 router.get("/api/workouts", (req, res) => {
-  Exercise.find({})
-    .sort({ date: -1 })
-    .then(dbExercise => {
-      res.json(dbExercise);
+  console.log('apiRoutes get hit')
+  // console.log(req)
+  Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
     })
     .catch(err => {
       res.status(400).json(err);
