@@ -3,19 +3,9 @@ const Workout = require("../models/workout.js");
 
 router.post("/api/workouts", async ({ body }, res) => {
   console.log('apiRoutes post hit')
-  // console.log(body)
-  // Workout.create(body)
-  //   .then(dbWorkout => {
-  //     res.json(dbWorkout);
-  //   })
-  //   .catch(err => {
-  //     res.status(400).json(err);
-  //   });
-
   const newWorkout = new Workout();
   await newWorkout.save();
   res.json(newWorkout)
-
 });
 
 router.put("/api/workouts/:id", async (req, res) => {
@@ -26,16 +16,10 @@ router.put("/api/workouts/:id", async (req, res) => {
   res.json(thisWorkout);
 });
 
-router.get("/api/workouts", (req, res) => {
+router.get("/api/workouts", async (req, res) => {
   console.log('apiRoutes get hit')
-  // console.log(req)
-  Workout.find({})
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+  const allWorkouts = await Workout.find({});
+  res.json(allWorkouts);
 });
 
 module.exports = router;
