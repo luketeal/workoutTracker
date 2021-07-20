@@ -1,8 +1,10 @@
+// var Chart = require('chart.js');
+
 function calculateTotalWeight(data) {
-  const totals = [];
+  let totals = [];
 
   data.forEach((workout) => {
-    const workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
+    let workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
       if (type === 'resistance') {
         return total + weight;
       }
@@ -11,12 +13,30 @@ function calculateTotalWeight(data) {
 
     totals.push(workoutTotal);
   });
+  console.log(totals)
+  return totals;
+}
 
+function calculateTotalDuration(data) {
+  let totals = [];
+
+  data.forEach((workout) => {
+    let workoutTotal = workout.exercises.reduce((acc, { duration }) => {
+        console.log(duration)
+        acc = (acc|| 0) + duration;
+        console.log(acc)
+      return acc;
+    }, 0);
+
+    totals.push(workoutTotal);
+  });
+  console.log(totals)
   return totals;
 }
 
 function populateChart(data) {
-  const durations = data.map(({ totalDuration }) => totalDuration);
+  console.log(data)
+  const durations = calculateTotalDuration(data);
   const pounds = calculateTotalWeight(data);
 
   const line = document.querySelector('#canvas').getContext('2d');
@@ -48,16 +68,18 @@ function populateChart(data) {
       ],
     },
     options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Time Spent Working Out (Last 7 days)',
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
+      plugins: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Time Spent Working Out (Last 7 days)',
         },
-      },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      }
     },
   });
 
@@ -90,19 +112,21 @@ function populateChart(data) {
       ],
     },
     options: {
-      title: {
+      plugins: {
+        title: {
         display: true,
         text: 'Pounds Lifted (Last 7 days)',
-      },
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
             },
-          },
-        ],
-      },
+          ],
+        },
+      }
     },
   });
 }
