@@ -1,5 +1,3 @@
-// var Chart = require('chart.js');
-
 function calculateTotalWeight(data) {
   let totals = [];
 
@@ -13,7 +11,6 @@ function calculateTotalWeight(data) {
 
     totals.push(workoutTotal);
   });
-  console.log(totals)
   return totals;
 }
 
@@ -22,20 +19,16 @@ function calculateTotalDuration(data) {
 
   data.forEach((workout) => {
     let workoutTotal = workout.exercises.reduce((acc, { duration }) => {
-        console.log(duration)
         acc = (acc|| 0) + duration;
-        console.log(acc)
       return acc;
     }, 0);
 
     totals.push(workoutTotal);
   });
-  console.log(totals)
   return totals;
 }
 
 function populateChart(data) {
-  console.log(data)
   const durations = calculateTotalDuration(data);
   const pounds = calculateTotalWeight(data);
 
@@ -72,7 +65,7 @@ function populateChart(data) {
         responsive: true,
         title: {
           display: true,
-          text: 'Time Spent Working Out (Last 7 days)',
+          text: 'Time Spent Working Out (Last 7 workouts)',
         },
         scales: {
           y: {
@@ -115,7 +108,7 @@ function populateChart(data) {
       plugins: {
         title: {
         display: true,
-        text: 'Pounds Lifted (Last 7 days)',
+        text: 'Pounds Lifted (Last 7 workouts)',
         },
         scales: {
           yAxes: [
