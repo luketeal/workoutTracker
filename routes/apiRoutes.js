@@ -15,7 +15,7 @@ router.put("/api/workouts/:id", async (req, res) => {
 });
 
 router.get("/api/workouts", async (req, res) => {
-  const allWorkouts = await Workout.find({});
+  const allWorkouts = await Workout.find({}).sort({day: 'ascending'});
   res.json(allWorkouts);
 });
 
