@@ -24,10 +24,10 @@ router.get("/api/workouts", async (req, res) => {
 
 router.get("/api/workouts/range", async (req, res) => {
   console.log('apiRoutes in range get hit')
-  // console.log(req.body)
-  const allWorkouts = await Workout.find({});
+  
+  const allWorkouts = await Workout.find({}).sort({day: 'ascending'}).limit(7);
+  console.log(allWorkouts)
   res.json(allWorkouts);
-  res.send()
 });
 
 module.exports = router;
